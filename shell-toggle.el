@@ -3,6 +3,7 @@
 ;;; Copyright (C) 1997, 1998 Mikael Sjödin (mic@docs.uu.se)
 ;;;
 ;;; Author: Mikael Sjödin  --  mic@docs.uu.se
+;;;    Modified on Apr 23 2002 by Matthieu Moy to manage ansi-term.
 ;;;
 ;;; This file is NOT part of GNU Emacs.
 ;;; You may however redistribute it and/or modify it under the terms of the GNU
@@ -78,14 +79,26 @@ If nil `shell-toggle-cd' will only insert the \"cd\" command in the
 shell-buffer.  Leaving it to the user to press RET to send the command to 
 the shell.")
 
+(defvar shell-toggle-launch-shell 'shell-toggle-ansi-term
+  "*The command to run to launch a shell.
+
+Currently supported are 'shell and 'shell-toggle-ansi-term. Any
+volunteer to port this to eterm ?")
+
+;;;###autoload
+(defun shell-toggle-ansi-term ()
+  (ansi-term (getenv "SHELL") "shell"))
+
 ;;; ======================================================================
 ;;; Commands:
 
+;;;###autoload
 (defun shell-toggle-cd ()
-  "Calls `shell-toggle' with a prefix argument.  Se command `shell-toggle'"
+  "Calls `shell-toggle' with a prefix argument.  See command `shell-toggle'"
   (interactive)
   (shell-toggle t))
 
+;;;###autoload
 (defun shell-toggle (make-cd)
   "Toggles between the *shell* buffer and whatever buffer you are editing.
 With a prefix ARG also insert a \"cd DIR\" command into the shell, where DIR is
@@ -103,13 +116,13 @@ Options: `shell-toggle-goto-eob'"
   ;; If in shell-buffer and called twice in a row, delete other windows
   ;; If in shell-buffer and not called twice in a row, return to state before
   ;;  going to the shell-buffer 
-  (if (eq major-mode 'shell-mode)
+  (if (string= (buffer-name) "*shell*")
       (if (and (or (eq last-command 'shell-toggle)
 		   (eq last-command 'shell-toggle-cd))
 	       (not (eq (count-windows) 1)))
 	  (delete-other-windows)
 	(shell-toggle-buffer-return-from-shell))
-    (shell-toggle-buffer-goto-shell make-cd)))
+      (shell-toggle-buffer-goto-shell make-cd)))
 
 ;;; ======================================================================
 ;;; Internal functions and declarations
@@ -137,7 +150,7 @@ start a new shell and switch to it in other window.  If argument MAKE-CD is
 non-nil, insert a \"cd DIR\" command into the shell, where DIR is the directory
 of the current buffer.
 
-Stores the window cofiguration before creating and/or switching window."
+Stores the window configuration before creating and/or switching window."
   (setq shell-toggle-pre-shell-win-conf (current-window-configuration))
   (let ((shell-buffer (get-buffer "*shell*"))
 	(cd-command
@@ -160,22 +173,33 @@ Stores the window cofiguration before creating and/or switching window."
       ;; (it has to do with my shell-mode-hook which inserts text into the
       ;; newly created shell-buffer and thats not allways a good idea).
       (condition-case the-error
-	  (shell)
+	  (funcall shell-toggle-launch-shell)
 	(error (switch-to-buffer "*shell*"))))
     (if (or cd-command shell-toggle-goto-eob)
 	(goto-char (point-max)))
     (if cd-command
 	(progn
+	  (if (eq shell-toggle-launch-shell 'shell)
+	      (progn
+		(insert " ")
+		(beginning-of-line)
+		(kill-line)))
 	  (insert cd-command)
 	  (if shell-toggle-automatic-cd
-	      (comint-send-input))
+	      (cond ((eq shell-toggle-launch-shell 'shell)
+		     (comint-send-input))
+		    ((eq shell-toggle-launch-shell
+			 'shell-toggle-ansi-term)
+		     (term-send-input))
+		    (t (message "Shell type not recognized")))
+	    )
 	  ))))
 
 (defun shell-toggle-buffer-switch-to-other-window ()
   "Switches to other window.  If the current window is the only window in the
 current frame, create a new window and switch to it.
 
-\(This is less intrusive to the current window configuration then 
+\(This is less intrusive to the current window configuration than 
 `switch-buffer-other-window')"
   (let ((this-window (selected-window)))
     (other-window 1)
