@@ -63,9 +63,6 @@
 ;;;   Christian Stern <Christian.Stern@physik.uni-regensburg.de> for helpful
 ;;;   sugestions.
 
-;;; ======================================================================
-;;; User Options:
-
 ;;; (incomplete) changelog
 ;;
 ;; Version 1.3 (January 10, 2004)
@@ -73,6 +70,8 @@
 ;;
 ;; Version 1.2
 ;; - Added the possibility to use different shells.
+
+(require 'term)
 
 (defvar shell-toggle-shell-buffer nil
   "Buffer of the shell")
@@ -108,8 +107,10 @@ the ansi-term mode. nil means use the default shell.")
   "Don't configure this variable. Use
 shell-toggle-term-shell-to-launch instead"
   (or shell-toggle-term-shell-to-launch
-      (getenv "SHELL"))
-  )
+      explicit-shell-file-name
+      (getenv "ESHELL")
+      (getenv "SHELL")
+      "/bin/sh"))
 
 ;;;###autoload
 (defun shell-toggle-ansi-term ()
