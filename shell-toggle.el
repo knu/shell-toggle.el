@@ -22,14 +22,14 @@
 ;;; shell buffer and whatever buffer you are editing.
 ;;;
 ;;; This is done in an "intelligent" way.  Features are:
-;;; o Starts a shell if non is existing.
+;;; o Starts a shell if none is existent.
 ;;; o Minimum distortion of your window configuration.
 ;;; o When done in the shell-buffer you are returned to the same window
 ;;;   configuration you had before you toggled to the shell.
 ;;; o If you desire, you automagically get a "cd" command in the shell to the
 ;;;   directory where your current buffers file exists; just call
 ;;;   shell-toggle-cd instead of shell-toggle.
-;;; o You can convinently choose if you want to have the shell in another
+;;; o You can conveniently choose if you want to have the shell in another
 ;;;   window or in the whole frame.  Just invoke shell-toggle again to get the
 ;;;   shell in the whole frame.
 ;;;
@@ -61,7 +61,7 @@
 ;;; ----------------------------------------------------------------------
 ;;; Thanks to:
 ;;;   Christian Stern <Christian.Stern@physik.uni-regensburg.de> for helpful
-;;;   sugestions.
+;;;   suggestions.
 
 ;;; (incomplete) changelog
 ;;
@@ -74,14 +74,13 @@
 (require 'term)
 
 (defvar shell-toggle-shell-buffer nil
-  "Buffer of the shell")
+  "Buffer of the shell.")
 
 (defvar shell-toggle-goto-eob t
-  "*If non-nil `shell-toggle' will move point to the end of the shell-buffer
-whenever the `shell-toggle' switched to the shell-buffer.
+  "*If non-nil `shell-toggle' moves the point to the end of the shell-buffer.
 
-When `shell-toggle-cd' is called the point is allways moved to the end of the
-shell-buffer")
+When `shell-toggle-cd' is called the point is always moved to the
+end of the shell-buffer."
 
 (defvar shell-toggle-automatic-cd t
   "*If non-nil `shell-toggle-cd' will send the \"cd\" command to the shell.
@@ -92,7 +91,7 @@ the shell.")
 (defvar shell-toggle-launch-shell 'shell-toggle-ansi-term
   "*The command to run to launch a shell.
 
-This must be a elisp function returning a buffer. (The newly created
+This must be a function returning a buffer.  (The newly created
 shell buffer)
 
 Currently supported are 'shell and 'shell-toggle-ansi-term, and
@@ -100,12 +99,9 @@ Currently supported are 'shell and 'shell-toggle-ansi-term, and
 
 ;;;###autoload
 (defvar shell-toggle-term-shell-to-launch nil
-  "*Command invoked by the terminal emulation when shell-toggle use
-the ansi-term mode. nil means use the default shell.")
+  "*If non-nil, is the shell invoked by `shell-toggle-ansi-term'.")
 
 (defun shell-toggle-run-this-shell ()
-  "Don't configure this variable. Use
-shell-toggle-term-shell-to-launch instead"
   (or shell-toggle-term-shell-to-launch
       explicit-shell-file-name
       (getenv "ESHELL")
@@ -124,11 +120,11 @@ shell-toggle-term-shell-to-launch instead"
 
 ;;;###autoload
 (defvar shell-toggle-leave-buffer-hook nil
-  "Hook ran before leaving the buffer to switch to the shell")
+  "Hook run before leaving the buffer to switch to the shell.")
 
 ;;;###autoload
 (defvar shell-toggle-goto-shell-hook nil
-  "Hook ran after switching to the shell buffer")
+  "Hook run after switching to the shell buffer.")
 
 ;;; ======================================================================
 ;;; Commands:
@@ -139,20 +135,21 @@ shell-toggle-term-shell-to-launch instead"
 
 ;;;###autoload
 (defun shell-toggle-cd ()
-  "Calls `shell-toggle' with a prefix argument.  See command `shell-toggle'"
+  "Call `shell-toggle' with a prefix argument.
+See command `shell-toggle'."
   (interactive)
   (shell-toggle t))
 
 ;;;###autoload
 (defun shell-toggle (make-cd)
-  "Toggles between the shell buffer and whatever buffer you are editing.
-With a prefix ARG also insert a \"cd DIR\" command into the shell, where DIR is
-the directory of the current buffer.
+  "Toggle between the shell buffer and whatever buffer you are editing.
+With a prefix argument MAKE-CD also insert a \"cd DIR\" command
+into the shell, where DIR is the directory of the current buffer.
 
 Call twice in a row to get a full screen window for the shell buffer.
 
 When called in the shell buffer returns you to the buffer you were editing
-before caling the first time.
+before calling this the first time.
 
 Options: `shell-toggle-goto-eob'"
   (interactive "P")
@@ -173,13 +170,13 @@ Options: `shell-toggle-goto-eob'"
 ;;; Internal functions and declarations
 
 (defvar shell-toggle-pre-shell-win-conf nil
-  "Contains the window configuration before the shell buffer was selected")
+  "Contains the window configuration before the shell buffer was selected.")
 
 (defvar shell-toggle-pre-shell-selected-frame nil
-  "Contains the frame selected before the shell buffer was selected")
+  "Contains the frame selected before the shell buffer was selected.")
 
 (defun shell-toggle-buffer-return-from-shell ()
-  "Restores the window configuration used before switching the shell buffer.
+  "Restore the window configuration used before switching the shell buffer.
 If no configuration has been stored, just burry the shell buffer."
   (if (window-configuration-p shell-toggle-pre-shell-win-conf)
       (progn
@@ -205,10 +202,11 @@ If no configuration has been stored, just burry the shell buffer."
       )))
 
 (defun shell-toggle-buffer-goto-shell (make-cd)
-  "Switches other window to the shell buffer.  If no shell buffer exists
-start a new shell and switch to it in other window.  If argument MAKE-CD is
-non-nil, insert a \"cd DIR\" command into the shell, where DIR is the directory
-of the current buffer.
+  "Switch other window to the shell buffer.
+If no shell buffer exists start a new shell and switch to it in
+other window.  If argument MAKE-CD is non-nil, insert a \"cd
+DIR\" command into the shell, where DIR is the directory of the
+current buffer.
 
 Stores the window configuration before creating and/or switching window."
   (setq shell-toggle-pre-shell-win-conf
@@ -293,8 +291,9 @@ Stores the window configuration before creating and/or switching window."
     ))
 
 (defun shell-toggle-buffer-switch-to-other-window ()
-  "Switches to other window.  If the current window is the only window in the
-current frame, create a new window and switch to it.
+  "Switch to other window.
+If the current window is the only window in the current frame,
+create a new window and switch to it.
 
 \(This is less intrusive to the current window configuration than
 `switch-buffer-other-window')"
