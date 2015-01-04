@@ -1,10 +1,10 @@
 ;;; shell-toggle.el --- Toggle to and from the shell buffer
 ;;;
-;;; Copyright (C) 1997, 1998 Mikael Sjödin (mic@docs.uu.se)
+;;; Copyright (C) 1997, 1998 Mikael SjÃ¶din (mic@docs.uu.se)
 ;;; Copyright (C) 2002, 2004 Matthieu Moy
 ;;; Copyright (C) 2015       Akinori MUSHA
 ;;;
-;;; Author: Mikael Sjödin <mic@docs.uu.se>
+;;; Author: Mikael SjÃ¶din <mic@docs.uu.se>
 ;;;         Matthieu Moy
 ;;;         Akinori MUSHA <knu@iDaemons.org>
 ;;; URL: https://github.com/knu/shell-toggle.el
