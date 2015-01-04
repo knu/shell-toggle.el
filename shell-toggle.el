@@ -73,33 +73,49 @@
 
 (require 'term)
 
+(defgroup shell-toggle nil
+  "Toggle to and from the shell buffer."
+  :group 'shell)
+
 (defvar shell-toggle-shell-buffer nil
   "Buffer of the shell.")
 
-(defvar shell-toggle-goto-eob t
-  "*If non-nil `shell-toggle' moves the point to the end of the shell-buffer.
+(defcustom shell-toggle-goto-eob t
+  "If non-nil `shell-toggle' moves the point to the end of the shell-buffer.
 
 When `shell-toggle-cd' is called the point is always moved to the
 end of the shell-buffer."
+  :group 'shell-toggle
+  :type 'boolean)
 
-(defvar shell-toggle-automatic-cd t
-  "*If non-nil `shell-toggle-cd' will send the \"cd\" command to the shell.
-If nil `shell-toggle-cd' will only insert the \"cd\" command in the
-shell-buffer.  Leaving it to the user to press RET to send the command to
-the shell.")
+(defcustom shell-toggle-automatic-cd t
+  "If non-nil `shell-toggle-cd' will send the \"cd\" command to the shell.
 
-(defvar shell-toggle-launch-shell 'shell-toggle-ansi-term
-  "*The command to run to launch a shell.
+If nil `shell-toggle-cd' will only insert the \"cd\" command in
+the shell-buffer.  Leaving it to the user to press RET to send
+the command to the shell."
+  :group 'shell-toggle
+  :type 'boolean)
+
+(defcustom shell-toggle-launch-shell 'shell-toggle-ansi-term
+  "The command to run to launch a shell.
 
 This must be a function returning a buffer.  (The newly created
 shell buffer)
 
 Currently supported are 'shell and 'shell-toggle-ansi-term, and
-'shell-toggle-eshell")
+'shell-toggle-eshell"
+  :group 'shell-toggle
+  :type '(choice :tag "Command to launch a shell"
+		 (const :tag "ansi-term" shell-toggle-ansi-term)
+		 (const :tag "eshell" shell-toggle-eshell)
+                 function))
 
 ;;;###autoload
-(defvar shell-toggle-term-shell-to-launch nil
-  "*If non-nil, is the shell invoked by `shell-toggle-ansi-term'.")
+(defcustom shell-toggle-term-shell-to-launch nil
+  "If non-nil, is the shell invoked by `shell-toggle-ansi-term'."
+  :group 'shell-toggle
+  :type '(choice (const :tag "None" nil) file))
 
 (defun shell-toggle-run-this-shell ()
   (or shell-toggle-term-shell-to-launch
@@ -119,12 +135,16 @@ Currently supported are 'shell and 'shell-toggle-ansi-term, and
   (eshell))
 
 ;;;###autoload
-(defvar shell-toggle-leave-buffer-hook nil
-  "Hook run before leaving the buffer to switch to the shell.")
+(defcustom shell-toggle-leave-buffer-hook nil
+  "Hook run before leaving the buffer to switch to the shell."
+  :group 'shell-toggle
+  :type 'hook)
 
 ;;;###autoload
-(defvar shell-toggle-goto-shell-hook nil
-  "Hook run after switching to the shell buffer.")
+(defcustom shell-toggle-goto-shell-hook nil
+  "Hook run after switching to the shell buffer."
+  :group 'shell-toggle
+  :type 'hook)
 
 ;;; ======================================================================
 ;;; Commands:
