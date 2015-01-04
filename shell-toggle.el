@@ -223,10 +223,10 @@ Stores the window configuration before creating and/or switching window."
 	 (and make-cd
               (or (and (buffer-file-name)
                        (file-name-directory (buffer-file-name))
-                       (concat "cd " (shell-quote-argument 
+                       (concat "cd " (shell-quote-argument
                                       (file-name-directory (buffer-file-name)))))
                   (and list-buffers-directory
-                       (concat "cd " (shell-quote-argument 
+                       (concat "cd " (shell-quote-argument
                                       list-buffers-directory)))
                   (and default-directory
                        (concat "cd " (shell-quote-argument
@@ -238,7 +238,7 @@ Stores the window configuration before creating and/or switching window."
     (run-hooks 'shell-toggle-leave-buffer-hook)
     (if (buffer-live-p shell-buffer)
 	  ;; buffer exists, let's see where it is.
-	  (let ((in-current-frame 
+	  (let ((in-current-frame
 		 (get-buffer-window shell-buffer nil)))
 	    (if in-current-frame
 		(switch-to-buffer-other-window shell-buffer)
