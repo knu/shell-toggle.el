@@ -111,7 +111,6 @@ Currently supported are 'shell and 'shell-toggle-ansi-term, and
 		 (const :tag "eshell" shell-toggle-eshell)
                  function))
 
-;;;###autoload
 (defcustom shell-toggle-term-shell-to-launch nil
   "If non-nil, is the shell invoked by `shell-toggle-ansi-term'."
   :group 'shell-toggle
@@ -124,23 +123,19 @@ Currently supported are 'shell and 'shell-toggle-ansi-term, and
       (getenv "SHELL")
       "/bin/sh"))
 
-;;;###autoload
 (defun shell-toggle-ansi-term ()
   (when (and shell-toggle-shell-buffer (not (get-buffer-process shell-toggle-shell-buffer)))
     (kill-buffer shell-toggle-shell-buffer))
   (ansi-term (shell-toggle-run-this-shell)))
 
-;;;###autoload
 (defun shell-toggle-eshell ()
   (eshell))
 
-;;;###autoload
 (defcustom shell-toggle-leave-buffer-hook nil
   "Hook run before leaving the buffer to switch to the shell."
   :group 'shell-toggle
   :type 'hook)
 
-;;;###autoload
 (defcustom shell-toggle-goto-shell-hook nil
   "Hook run after switching to the shell buffer."
   :group 'shell-toggle
@@ -149,7 +144,6 @@ Currently supported are 'shell and 'shell-toggle-ansi-term, and
 ;;; ======================================================================
 ;;; Commands:
 
-;;;###autoload
 (defun shell-toggle-this-is-the-shell-buffer () (interactive)
   (setq shell-toggle-shell-buffer (current-buffer)))
 
