@@ -1,9 +1,15 @@
 ;;; shell-toggle.el --- Toggle to and from the shell buffer
-;;; Version 1.3 - 98-11-19
-;;; Copyright (C) 1997, 1998 Mikael Sjödin (mic@docs.uu.se)
 ;;;
-;;; Author: Mikael Sjödin  --  mic@docs.uu.se
-;;;    Modified on Apr 23 2002 by Matthieu Moy to manage ansi-term and eshell.
+;;; Copyright (C) 1997, 1998 Mikael Sjödin (mic@docs.uu.se)
+;;; Copyright (C) 2002, 2004 Matthieu Moy
+;;; Copyright (C) 2015       Akinori MUSHA
+;;;
+;;; Author: Mikael Sjödin <mic@docs.uu.se>
+;;;         Matthieu Moy
+;;;         Akinori MUSHA <knu@iDaemons.org>
+;;; URL: https://github.com/knu/shell-toggle.el
+;;; Version: 1.3.1
+;;; Keywords: processes
 ;;;
 ;;; This file is NOT part of GNU Emacs.
 ;;; You may however redistribute it and/or modify it under the terms of the GNU
@@ -14,7 +20,8 @@
 ;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;;; GNU General Public License for more details.
-
+;;;
+;;; Commentary:
 ;;; ----------------------------------------------------------------------
 ;;; Description:
 ;;;
@@ -65,11 +72,17 @@
 
 ;;; (incomplete) changelog
 ;;
+;; Version 1.3.1 (January 4, 2015)
+;; - Check `explicit-shell-file-name' and $ESHELL.
+;; - Add customize knobs.
+;;
 ;; Version 1.3 (January 10, 2004)
 ;; - Port to eshell
 ;;
 ;; Version 1.2
 ;; - Added the possibility to use different shells.
+
+;;; Code:
 
 (require 'term)
 
@@ -320,5 +333,6 @@ create a new window and switch to it.
 	  (split-window-vertically)
           (other-window 1)))))
 
-
 (provide 'shell-toggle)
+
+;;; shell-toggle.el ends here
