@@ -86,6 +86,9 @@
 
 (require 'term)
 
+(declare-function ido-get-buffers-in-frames "ido")
+(declare-function eshell-send-input "esh-mode")
+
 (defgroup shell-toggle nil
   "Toggle to and from the shell buffer."
   :group 'shell)
