@@ -267,7 +267,6 @@ Stores the window configuration before creating and/or switching window."
                   (and default-directory
                        (concat "cd " (shell-quote-argument
                                       default-directory)))))))
-    (message "shell-toggle-buffer-goto-shell run hook")
 
     ;; Switch to an existing shell if one exists, otherwise switch to another
     ;; window and start a new shell
