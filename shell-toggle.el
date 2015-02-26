@@ -127,6 +127,12 @@ Currently supported are 'shell and 'shell-toggle-ansi-term, and
 		 (const :tag "eshell" shell-toggle-eshell)
                  function))
 
+(defcustom shell-toggle-full-screen-window-only nil
+  "If non-nil, `shell-toggle' will switch between full screen
+shell window, and back, with no intermediate step."
+  :group 'shell-toggle
+  :type 'boolean)
+
 (defcustom shell-toggle-term-shell-to-launch nil
   "If non-nil, is the shell invoked by `shell-toggle-ansi-term'."
   :group 'shell-toggle
@@ -194,7 +200,9 @@ Options: `shell-toggle-goto-eob'"
 	       (not (eq (count-windows) 1)))
 	  (delete-other-windows)
 	(shell-toggle-buffer-return-from-shell))
-    (shell-toggle-buffer-goto-shell make-cd)))
+    (progn
+      (shell-toggle-buffer-goto-shell make-cd)
+      (if shell-toggle-full-screen-window-only (delete-other-windows)))))
 
 ;;; ======================================================================
 ;;; Internal functions and declarations
@@ -259,7 +267,6 @@ Stores the window configuration before creating and/or switching window."
                   (and default-directory
                        (concat "cd " (shell-quote-argument
                                       default-directory)))))))
-    (message "shell-toggle-buffer-goto-shell run hook")
 
     ;; Switch to an existing shell if one exists, otherwise switch to another
     ;; window and start a new shell
