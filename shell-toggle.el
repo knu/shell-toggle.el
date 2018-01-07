@@ -266,7 +266,7 @@ Stores the window configuration before creating and/or switching window."
                                       list-buffers-directory)))
                   (and default-directory
                        (concat "cd " (shell-quote-argument
-                                      default-directory)))))))
+                                      (expand-file-name default-directory))))))))
 
     ;; Switch to an existing shell if one exists, otherwise switch to another
     ;; window and start a new shell
